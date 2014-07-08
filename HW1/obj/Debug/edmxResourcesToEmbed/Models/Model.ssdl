@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="客戶資料Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="客戶資料ModelStoreContainer">
+    <EntitySet Name="客戶資料" EntityType="客戶資料Model.Store.客戶資料" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="客戶銀行資訊" EntityType="客戶資料Model.Store.客戶銀行資訊" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="客戶聯絡人" EntityType="客戶資料Model.Store.客戶聯絡人" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="客戶資訊" EntityType="客戶資料Model.Store.客戶資訊" store:Type="Views" store:Schema="dbo" store:Name="客戶資訊">
+      <DefiningQuery>SELECT 
+      [客戶資訊].[客戶Id] AS [客戶Id], 
+      [客戶資訊].[客戶名稱] AS [客戶名稱], 
+      [客戶資訊].[客戶聯絡人數量] AS [客戶聯絡人數量], 
+      [客戶資訊].[客戶銀行資訊數量] AS [客戶銀行資訊數量]
+      FROM [dbo].[客戶資訊] AS [客戶資訊]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_客戶銀行資訊_客戶資料" Association="客戶資料Model.Store.FK_客戶銀行資訊_客戶資料">
+      <End Role="客戶資料" EntitySet="客戶資料" />
+      <End Role="客戶銀行資訊" EntitySet="客戶銀行資訊" />
+    </AssociationSet>
+    <AssociationSet Name="FK_客戶聯絡人_客戶資料" Association="客戶資料Model.Store.FK_客戶聯絡人_客戶資料">
+      <End Role="客戶資料" EntitySet="客戶資料" />
+      <End Role="客戶聯絡人" EntitySet="客戶聯絡人" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="客戶資料">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="客戶名稱" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="統一編號" Type="char" Nullable="false" MaxLength="8" />
+    <Property Name="電話" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="傳真" Type="nvarchar" MaxLength="50" />
+    <Property Name="地址" Type="nvarchar" MaxLength="100" />
+    <Property Name="Email" Type="nvarchar" MaxLength="250" />
+    <Property Name="isDelete" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="客戶銀行資訊">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="客戶Id" Type="int" Nullable="false" />
+    <Property Name="銀行名稱" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="銀行代碼" Type="int" Nullable="false" />
+    <Property Name="分行代碼" Type="int" />
+    <Property Name="帳戶名稱" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="帳戶號碼" Type="nvarchar" Nullable="false" MaxLength="20" />
+    <Property Name="isDelete" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="客戶聯絡人">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="客戶Id" Type="int" Nullable="false" />
+    <Property Name="職稱" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="姓名" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Email" Type="nvarchar" Nullable="false" MaxLength="250" />
+    <Property Name="手機" Type="nvarchar" MaxLength="50" />
+    <Property Name="電話" Type="nvarchar" MaxLength="50" />
+    <Property Name="isDelete" Type="bit" Nullable="false" />
+  </EntityType>
+  <!--產生期間發現錯誤:
+      警告 6002: 資料表/檢視 'D:\PROJECTS\HW1\HW1\HW1\APP_DATA\客戶資料.MDF.dbo.客戶資訊' 未定義主索引鍵。已推斷此索引鍵，並將定義建立成唯讀的資料表/檢視。
+      -->
+  <EntityType Name="客戶資訊">
+    <Key>
+      <PropertyRef Name="客戶Id" />
+      <PropertyRef Name="客戶名稱" />
+    </Key>
+    <Property Name="客戶Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="客戶名稱" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="客戶聯絡人數量" Type="int" />
+    <Property Name="客戶銀行資訊數量" Type="int" />
+  </EntityType>
+  <Association Name="FK_客戶銀行資訊_客戶資料">
+    <End Role="客戶資料" Type="客戶資料Model.Store.客戶資料" Multiplicity="1" />
+    <End Role="客戶銀行資訊" Type="客戶資料Model.Store.客戶銀行資訊" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="客戶資料">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="客戶銀行資訊">
+        <PropertyRef Name="客戶Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_客戶聯絡人_客戶資料">
+    <End Role="客戶資料" Type="客戶資料Model.Store.客戶資料" Multiplicity="1" />
+    <End Role="客戶聯絡人" Type="客戶資料Model.Store.客戶聯絡人" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="客戶資料">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="客戶聯絡人">
+        <PropertyRef Name="客戶Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

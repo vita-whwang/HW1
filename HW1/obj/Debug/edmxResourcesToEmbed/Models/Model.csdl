@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="客戶資料Model" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="客戶資料Entities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="客戶資料" EntityType="客戶資料Model.客戶資料" />
+    <EntitySet Name="客戶銀行資訊" EntityType="客戶資料Model.客戶銀行資訊" />
+    <EntitySet Name="客戶聯絡人" EntityType="客戶資料Model.客戶聯絡人" />
+    <AssociationSet Name="FK_客戶銀行資訊_客戶資料" Association="客戶資料Model.FK_客戶銀行資訊_客戶資料">
+      <End Role="客戶資料" EntitySet="客戶資料" />
+      <End Role="客戶銀行資訊" EntitySet="客戶銀行資訊" />
+    </AssociationSet>
+    <AssociationSet Name="FK_客戶聯絡人_客戶資料" Association="客戶資料Model.FK_客戶聯絡人_客戶資料">
+      <End Role="客戶資料" EntitySet="客戶資料" />
+      <End Role="客戶聯絡人" EntitySet="客戶聯絡人" />
+    </AssociationSet>
+    <EntitySet Name="客戶資訊" EntityType="客戶資料Model.客戶資訊" />
+  </EntityContainer>
+  <EntityType Name="客戶資料">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="客戶名稱" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="統一編號" Type="String" Nullable="false" MaxLength="8" Unicode="false" FixedLength="true" />
+    <Property Name="電話" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="傳真" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="地址" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+    <Property Name="Email" Type="String" MaxLength="250" Unicode="true" FixedLength="false" />
+    <Property Name="isDelete" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="客戶銀行資訊" Relationship="客戶資料Model.FK_客戶銀行資訊_客戶資料" FromRole="客戶資料" ToRole="客戶銀行資訊" />
+    <NavigationProperty Name="客戶聯絡人" Relationship="客戶資料Model.FK_客戶聯絡人_客戶資料" FromRole="客戶資料" ToRole="客戶聯絡人" />
+  </EntityType>
+  <EntityType Name="客戶銀行資訊">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="客戶Id" Type="Int32" Nullable="false" />
+    <Property Name="銀行名稱" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="銀行代碼" Type="Int32" Nullable="false" />
+    <Property Name="分行代碼" Type="Int32" />
+    <Property Name="帳戶名稱" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="帳戶號碼" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+    <Property Name="isDelete" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="客戶資料" Relationship="客戶資料Model.FK_客戶銀行資訊_客戶資料" FromRole="客戶銀行資訊" ToRole="客戶資料" />
+  </EntityType>
+  <EntityType Name="客戶聯絡人">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="客戶Id" Type="Int32" Nullable="false" />
+    <Property Name="職稱" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="姓名" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="250" Unicode="true" FixedLength="false" />
+    <Property Name="手機" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="電話" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+    <Property Name="isDelete" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="客戶資料" Relationship="客戶資料Model.FK_客戶聯絡人_客戶資料" FromRole="客戶聯絡人" ToRole="客戶資料" />
+  </EntityType>
+  <Association Name="FK_客戶銀行資訊_客戶資料">
+    <End Role="客戶資料" Type="客戶資料Model.客戶資料" Multiplicity="1" />
+    <End Role="客戶銀行資訊" Type="客戶資料Model.客戶銀行資訊" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="客戶資料">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="客戶銀行資訊">
+        <PropertyRef Name="客戶Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_客戶聯絡人_客戶資料">
+    <End Role="客戶資料" Type="客戶資料Model.客戶資料" Multiplicity="1" />
+    <End Role="客戶聯絡人" Type="客戶資料Model.客戶聯絡人" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="客戶資料">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="客戶聯絡人">
+        <PropertyRef Name="客戶Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="客戶資訊">
+    <Key>
+      <PropertyRef Name="客戶Id" />
+      <PropertyRef Name="客戶名稱" />
+    </Key>
+    <Property Type="Int32" Name="客戶Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="客戶名稱" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="客戶聯絡人數量" />
+    <Property Type="Int32" Name="客戶銀行資訊數量" />
+  </EntityType>
+</Schema>
